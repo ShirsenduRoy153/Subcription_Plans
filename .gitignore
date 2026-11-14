@@ -1,0 +1,22 @@
+# Dependencies & Build artifacts
+node_modules/
+dist/
+build/
+out/
+.gradle/
+target/
+*.tsbuildinfo
+
+# Local Environment Variables & Secrets
+.env
+*.env.local
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.log
+
+# Operating System
+.DS_Store
+Thumbs.db
