@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     if (businessId != null) {
                         TenantContext.setTenantId(businessId);
+                        org.slf4j.MDC.put("tenantId", String.valueOf(businessId));
                     }
                 }
             }

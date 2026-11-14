@@ -6,11 +6,13 @@ import com.subscription.platform.business.repository.BusinessRepository;
 import com.subscription.platform.common.exception.ResourceNotFoundException;
 import com.subscription.platform.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BusinessService {
 
     private final BusinessRepository businessRepository;
@@ -18,6 +20,7 @@ public class BusinessService {
     @Transactional(readOnly = true)
     public BusinessResponse getCurrentBusiness() {
         Long tenantId = TenantContext.getTenantId();
+        log.info("Retrieving business profile for tenant ID: {}", tenantId);
         if (tenantId == null) {
             throw new ResourceNotFoundException("No active tenant context found for authenticated request");
         }
