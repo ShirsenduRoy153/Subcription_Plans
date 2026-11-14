@@ -22,3 +22,4 @@ public class UserResponse {
     private boolean emailVerified;
     private Instant createdAt;
 }
+

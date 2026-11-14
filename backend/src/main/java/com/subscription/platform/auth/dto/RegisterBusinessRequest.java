@@ -42,3 +42,4 @@ public class RegisterBusinessRequest {
 
     private String currency;
 }
+

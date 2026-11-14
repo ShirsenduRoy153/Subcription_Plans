@@ -65,3 +65,4 @@ public class Business {
         this.updatedAt = Instant.now();
     }
 }
+

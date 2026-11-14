@@ -30,3 +30,4 @@ public class BusinessController {
         return ResponseEntity.ok(ApiResponse.ok("Business profile retrieved successfully", response));
     }
 }
+

@@ -23,3 +23,4 @@ public class BusinessResponse {
     private String status;
     private Instant createdAt;
 }
+

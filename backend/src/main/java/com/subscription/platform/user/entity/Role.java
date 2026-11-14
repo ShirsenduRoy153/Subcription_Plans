@@ -5,3 +5,4 @@ public enum Role {
     BUSINESS_ADMIN,
     CUSTOMER
 }
+

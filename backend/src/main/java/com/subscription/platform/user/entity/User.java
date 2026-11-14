@@ -100,3 +100,4 @@ public class User implements UserDetails {
         return "ACTIVE".equalsIgnoreCase(this.status);
     }
 }
+
