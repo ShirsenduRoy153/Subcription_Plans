@@ -1,6 +1,10 @@
 # Multi-Tenant Subscription Management Platform
 
-## Project overview and technical specification
+## Project Overview and Technical Specification
+
+> **Modular Documentation Index:**
+> - [01 Database Schema & Domain Specification](docs/01_database_schema_and_domain.md) — Detailed tables, types, constraints, and relationships.
+> - [02 Product & Payment Architecture](docs/02_product_and_payment_architecture.md) — Business model, personas, BYOK payment routing, and headless API strategy.
 
 ## 1. Project purpose
 
