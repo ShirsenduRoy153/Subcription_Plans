@@ -41,6 +41,30 @@ Stores system categories, business types, currencies, and member roles dynamical
 
 ### Section B: Identity & Multi-Tenancy (Many-to-Many)
 
+#### `roles` (Dynamic RBAC & Hierarchy)
+Dedicated security table defining roles, numerical hierarchy levels, and granular permissions.
+
+| Column | Type | Constraints | Description & Example |
+|---|---|---|---|
+| `id` | `BIGSERIAL` | `PRIMARY KEY` | Unique Role ID |
+| `business_id` | `BIGINT` | *Nullable* `REFERENCES businesses(id) ON DELETE CASCADE` | `NULL` for global system defaults; set for custom tenant roles |
+| `role_name` | `VARCHAR(100)` | `NOT NULL` | Display Name (e.g. `"Workspace Owner"`, `"Staff Member"`) |
+| `role_code` | `VARCHAR(50)` | `NOT NULL` | Unique code (e.g. `"OWNER"`, `"ADMIN"`, `"STAFF"`, `"CUSTOMER"`) |
+| `hierarchy_level`| `INTEGER` | `NOT NULL DEFAULT 10` | Numerical rank (`100` = Owner, `80` = Admin, `40` = Staff, `10` = Customer) |
+| `permissions` | `JSONB` | `NOT NULL DEFAULT '[]'` | Dynamic permissions (e.g. `["*"]` or `["members:read", "checkin:write"]`) |
+| `is_system_default`| `BOOLEAN` | `NOT NULL DEFAULT FALSE` | Flag for default platform roles |
+| `created_at` | `TIMESTAMP WITH TIME ZONE` | `NOT NULL DEFAULT NOW()` | Creation timestamp |
+| `updated_at` | `TIMESTAMP WITH TIME ZONE` | `NOT NULL DEFAULT NOW()` | Last update timestamp |
+
+* **Constraints:** `UNIQUE(business_id, role_code)`
+* **Pre-seeded Roles:**
+  - `OWNER` (Level 100): `["*"]`
+  - `ADMIN` (Level 80): `["plans:write", "members:write", "analytics:read"]`
+  - `STAFF` (Level 40): `["plans:read", "members:read", "checkin:write"]`
+  - `CUSTOMER` (Level 10): `["my_subscription:read", "invoices:read"]`
+
+---
+
 #### `users`
 Global identity table. A single person account can access multiple business workspaces.
 
@@ -96,7 +120,7 @@ Many-to-Many join table linking users to business workspaces.
 | `id` | `BIGSERIAL` | `PRIMARY KEY` | Unique Membership ID |
 | `business_id` | `BIGINT` | `NOT NULL REFERENCES businesses(id) ON DELETE CASCADE` | Workspace reference |
 | `user_id` | `BIGINT` | `NOT NULL REFERENCES users(id) ON DELETE CASCADE` | User reference |
-| `role_id` | `BIGINT` | `NOT NULL REFERENCES domain_lookups(id)` | Foreign key to member role lookup (`OWNER`, `ADMIN`, `STAFF`, `CUSTOMER`) |
+| `role_id` | `BIGINT` | `NOT NULL REFERENCES roles(id) ON DELETE RESTRICT` | Foreign key to `roles` table (`OWNER`, `ADMIN`, etc.) |
 | `status` | `VARCHAR(20)` | `NOT NULL DEFAULT 'ACTIVE'` | Membership status (`ACTIVE`, `INVITED`, `DEACTIVATED`) |
 | `created_at` | `TIMESTAMP WITH TIME ZONE` | `NOT NULL DEFAULT NOW()` | Joined timestamp |
 | `updated_at` | `TIMESTAMP WITH TIME ZONE` | `NOT NULL DEFAULT NOW()` | Last update timestamp |

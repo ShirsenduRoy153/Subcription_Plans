@@ -37,6 +37,15 @@ public class JwtService {
         return null;
     }
 
+    public Long extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        Object userId = claims.get("userId");
+        if (userId instanceof Number number) {
+            return number.longValue();
+        }
+        return null;
+    }
+
     public String extractRole(String token) {
         Claims claims = extractAllClaims(token);
         return claims.get("role", String.class);
@@ -48,11 +57,18 @@ public class JwtService {
     }
 
     public String generateToken(User user) {
+        return generateToken(user, null, null);
+    }
+
+    public String generateToken(User user, Long activeBusinessId, String roleCode) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", user.getId());
-        extraClaims.put("role", user.getRole().name());
-        if (user.getBusinessId() != null) {
-            extraClaims.put("businessId", user.getBusinessId());
+        extraClaims.put("email", user.getEmail());
+        if (activeBusinessId != null) {
+            extraClaims.put("businessId", activeBusinessId);
+        }
+        if (roleCode != null) {
+            extraClaims.put("role", roleCode);
         }
         return generateToken(extraClaims, user);
     }
@@ -94,4 +110,3 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
-
