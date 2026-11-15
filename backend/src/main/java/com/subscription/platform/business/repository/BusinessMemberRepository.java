@@ -22,3 +22,4 @@ public interface BusinessMemberRepository extends JpaRepository<BusinessMember, 
 
     boolean existsByBusinessIdAndUserId(Long businessId, Long userId);
 }
+

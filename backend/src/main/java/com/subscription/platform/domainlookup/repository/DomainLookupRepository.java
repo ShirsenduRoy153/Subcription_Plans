@@ -16,3 +16,4 @@ public interface DomainLookupRepository extends JpaRepository<DomainLookup, Long
 
     boolean existsByDomainTypeAndLookupCode(String domainType, String lookupCode);
 }
+

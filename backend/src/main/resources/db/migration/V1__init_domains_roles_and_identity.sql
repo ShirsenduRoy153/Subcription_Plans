@@ -112,3 +112,4 @@ CREATE TABLE business_members (
 CREATE INDEX idx_business_members_business_id ON business_members(business_id);
 CREATE INDEX idx_business_members_user_id ON business_members(user_id);
 CREATE INDEX idx_business_members_role_id ON business_members(role_id);
+

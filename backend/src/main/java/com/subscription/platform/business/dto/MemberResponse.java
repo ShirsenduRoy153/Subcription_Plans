@@ -25,3 +25,4 @@ public class MemberResponse {
     private String status;
     private Instant joinedAt;
 }
+

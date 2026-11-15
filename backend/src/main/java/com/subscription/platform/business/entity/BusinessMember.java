@@ -48,3 +48,4 @@ public class BusinessMember {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 }
+

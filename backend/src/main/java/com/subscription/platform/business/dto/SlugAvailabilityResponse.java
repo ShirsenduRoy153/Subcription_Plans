@@ -14,3 +14,4 @@ public class SlugAvailabilityResponse {
     private boolean available;
     private String message;
 }
+

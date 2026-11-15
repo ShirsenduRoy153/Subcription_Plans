@@ -17,3 +17,4 @@ public class DomainLookupResponse {
     private String description;
     private Integer sortOrder;
 }
+

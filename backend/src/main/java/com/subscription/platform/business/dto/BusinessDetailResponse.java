@@ -33,3 +33,4 @@ public class BusinessDetailResponse {
     private Instant createdAt;
     private Instant updatedAt;
 }
+

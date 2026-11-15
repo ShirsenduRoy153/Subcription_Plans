@@ -19,3 +19,4 @@ public class CompactBusinessResponse {
     private Integer hierarchyLevel;
     private String status;
 }
+

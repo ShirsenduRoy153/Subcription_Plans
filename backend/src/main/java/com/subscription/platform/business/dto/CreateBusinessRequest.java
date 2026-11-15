@@ -40,3 +40,4 @@ public class CreateBusinessRequest {
     private String timezone;
     private String tagline;
 }
+

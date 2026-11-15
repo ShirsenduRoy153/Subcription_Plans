@@ -28,3 +28,4 @@ public class DomainLookupController {
         return ResponseEntity.ok(ApiResponse.ok(lookups));
     }
 }
+

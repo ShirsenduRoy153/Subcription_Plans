@@ -25,3 +25,4 @@ public class UpdateBusinessRequest {
     private String razorpayKeyId;
     private String razorpayKeySecret;
 }
+

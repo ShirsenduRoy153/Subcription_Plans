@@ -1,74 +1,82 @@
-// Core entity and API types
+// Core entity and API types for Identity, Domain Lookups, and Multi-Tenant Workspaces
 
-export type UserRole = 'PLATFORM_ADMIN' | 'BUSINESS_ADMIN' | 'CUSTOMER';
+export interface DomainLookupItem {
+  id: number;
+  domainType: string;
+  code: string;
+  value: string;
+  description?: string;
+  sortOrder: number;
+}
 
 export interface User {
   id: number;
   email: string;
   fullName: string;
-  role: UserRole;
-  businessId?: number;
+  phone?: string;
+  emailVerified: boolean;
+  status: string;
+  createdAt: string;
 }
 
-export interface Business {
+export interface AuthResponse {
+  token: string;
+  tokenType: string;
+  user: User;
+}
+
+export interface CompactBusiness {
   id: number;
   businessName: string;
   businessSlug: string;
-  businessType?: string;
+  businessType: string;
+  currency: string;
+  userRole: string;
+  hierarchyLevel: number;
+  status: string;
+}
+
+export interface BusinessDetail {
+  id: number;
+  businessName: string;
+  businessSlug: string;
+  businessTypeId: number;
+  businessType: string;
+  currencyId: number;
+  currency: string;
   email: string;
   phone?: string;
-  currency: string;
-  status: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
+  address?: string;
+  timezone: string;
+  logoUrl?: string;
+  coverImageUrl?: string;
+  primaryColor?: string;
+  tagline?: string;
+  status: string;
+  userRole?: string;
+  hierarchyLevel?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type FeatureType = 'BOOLEAN' | 'NUMBER' | 'TEXT' | 'LIST';
-
-export interface BusinessFeature {
-  id: number;
-  businessId: number;
-  featureName: string;
-  featureCode: string;
-  description?: string;
-  featureType: FeatureType;
-  isActive: boolean;
+export interface Member {
+  membershipId: number;
+  userId: number;
+  fullName: string;
+  email: string;
+  phone?: string;
+  roleCode: string;
+  roleName: string;
+  hierarchyLevel: number;
+  permissions: string[];
+  status: string;
+  joinedAt: string;
 }
 
-export interface PlanFeatureValue {
-  featureId: number;
-  featureCode: string;
-  featureName: string;
-  featureType: FeatureType;
-  valueBoolean?: boolean;
-  valueNumber?: number;
-  valueText?: string;
-  valueJson?: string[];
-}
-
-export interface Plan {
-  id: number;
-  businessId: number;
-  planName: string;
-  planCode?: string;
-  description?: string;
-  price: number;
-  currency: string;
-  billingInterval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
-  billingIntervalCount: number;
-  trialDays: number;
-  isActive: boolean;
-  features: PlanFeatureValue[];
-}
-
-export interface Subscription {
-  id: number;
-  businessId: number;
-  customerId: number;
-  planId: number;
-  status: 'PENDING' | 'ACTIVE' | 'PAST_DUE' | 'CANCELLED' | 'EXPIRED';
-  currentPeriodStart: string;
-  currentPeriodEnd: string;
-  cancelAtPeriodEnd: boolean;
-  planName?: string;
+export interface SlugAvailability {
+  slug: string;
+  available: boolean;
+  message: string;
 }
 
 export interface ApiResponse<T> {
@@ -77,4 +85,3 @@ export interface ApiResponse<T> {
   data: T;
   timestamp: string;
 }
-
