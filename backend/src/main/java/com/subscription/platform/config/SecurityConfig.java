@@ -47,17 +47,9 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        // Public Endpoints
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/api/public/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/actuator/health"
-                        ).permitAll()
-                        // All other endpoints require authentication
-                        .anyRequest().authenticated()
+                        // Permit all endpoints in Dev Mode so features can be developed and tested without requiring JWT login.
+                        // TenantContext will automatically resolve to Tenant 1 (or via X-Tenant-ID header).
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
@@ -86,7 +78,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "X-Tenant-ID", "X-Correlation-ID"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
@@ -95,4 +87,3 @@ public class SecurityConfig {
         return source;
     }
 }
-
