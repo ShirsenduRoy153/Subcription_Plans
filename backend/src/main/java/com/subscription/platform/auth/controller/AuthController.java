@@ -1,8 +1,6 @@
 package com.subscription.platform.auth.controller;
 
-import com.subscription.platform.auth.dto.AuthResponse;
-import com.subscription.platform.auth.dto.LoginRequest;
-import com.subscription.platform.auth.dto.RegisterBusinessRequest;
+import com.subscription.platform.auth.dto.*;
 import com.subscription.platform.auth.service.AuthService;
 import com.subscription.platform.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "Authentication", description = "Business registration, login, and JWT token issuance")
+@Tag(name = "Authentication", description = "Business registration, login, OTP verification, and JWT issuance")
 public class AuthController {
 
     private final AuthService authService;
@@ -36,12 +34,29 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Authenticate user and receive a JWT token")
+    @Operation(summary = "Authenticate user with password and receive a JWT token")
     public ResponseEntity<ApiResponse<AuthResponse>> login(
             @Valid @RequestBody LoginRequest request
     ) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(ApiResponse.ok("Login successful", response));
     }
-}
 
+    @PostMapping("/otp/send")
+    @Operation(summary = "Request a 6-digit OTP to login. Checks if email exists, applies 60s cooldown, and dispatches email.")
+    public ResponseEntity<ApiResponse<OtpSendResponse>> sendOtp(
+            @Valid @RequestBody OtpSendRequest request
+    ) {
+        OtpSendResponse response = authService.sendOtp(request);
+        return ResponseEntity.ok(ApiResponse.ok(response.getMessage(), response));
+    }
+
+    @PostMapping("/otp/verify")
+    @Operation(summary = "Verify OTP code from email and receive a secure JWT token")
+    public ResponseEntity<ApiResponse<AuthResponse>> verifyOtp(
+            @Valid @RequestBody OtpVerifyRequest request
+    ) {
+        AuthResponse response = authService.verifyOtp(request);
+        return ResponseEntity.ok(ApiResponse.ok("Verification successful. Logged in.", response));
+    }
+}

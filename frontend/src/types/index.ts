@@ -8,6 +8,7 @@ export interface User {
   fullName: string;
   role: UserRole;
   businessId?: number;
+  emailVerified?: boolean;
 }
 
 export interface Business {
@@ -19,6 +20,18 @@ export interface Business {
   phone?: string;
   currency: string;
   status: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
+}
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+  business?: Business | null;
+}
+
+export interface OtpSendResponse {
+  exists: boolean;
+  message: string;
+  cooldownSeconds?: number;
 }
 
 export type FeatureType = 'BOOLEAN' | 'NUMBER' | 'TEXT' | 'LIST';
@@ -77,4 +90,3 @@ export interface ApiResponse<T> {
   data: T;
   timestamp: string;
 }
-
